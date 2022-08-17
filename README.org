@@ -4,3 +4,8 @@
 #+OPTIONS: toc:nil
 
 Utility library for C++.
+
+- Argument parsing
+- Formatting library
+- JSON parsing
+- Unit test macros
