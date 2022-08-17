@@ -20,7 +20,7 @@
 	if (!(x)) {                                                                \
 		fprintf(stderr, " \033[31;1mFAIL:\033[0m  %s:%d: EXPECT(%s) failed\n", \
 		        __FILE__, __LINE__, #x);                                       \
-		Test::TestSuite::the().currentTestCaseFailed();                        \
+		test::TestSuite::the().currentTestCaseFailed();                        \
 		result;                                                                \
 	}
 
@@ -41,7 +41,7 @@
 		std::cerr << " \033[31;1mFAIL:\033[0m  " << __FILE__ << ":" << __LINE__ \
 				  << ": EXPECT_EQ(" << #a << ", " << #b ") failed with"         \
 				  << " lhs='" << a << "' and rhs='" << b << "'" << std::endl;   \
-		Test::TestSuite::the().currentTestCaseFailed();                         \
+		test::TestSuite::the().currentTestCaseFailed();                         \
 		result;                                                                 \
 	}
 
@@ -62,7 +62,7 @@
 		std::cerr << " \033[31;1mFAIL:\033[0m  " << __FILE__ << ":" << __LINE__ \
 				  << ": EXPECT_NE(" << #a << ", " << #b ") failed with"         \
 				  << " lhs='" << a << "' and rhs='" << b << "'" << std::endl;   \
-		Test::TestSuite::the().currentTestCaseFailed();                         \
+		test::TestSuite::the().currentTestCaseFailed();                         \
 		result;                                                                 \
 	}
 

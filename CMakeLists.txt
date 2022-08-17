@@ -63,7 +63,7 @@ target_include_directories(${PROJECT} PRIVATE
 # Unit test library target
 
 # Define source files
-file(GLOB TEST_LIBRARY_SOURCES "test/*.cpp" "src/util/timer.cpp")
+file(GLOB TEST_LIBRARY_SOURCES "test/*.cpp" "src/ruc/timer.cpp")
 
 add_library(${PROJECT}-test STATIC ${TEST_LIBRARY_SOURCES})
 target_include_directories(${PROJECT}-test PRIVATE

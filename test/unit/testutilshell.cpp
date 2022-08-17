@@ -1,21 +1,21 @@
 #include <string>
 
 #include "macro.h"
+#include "ruc/shell.h"
 #include "testcase.h"
 #include "testsuite.h"
-#include "util/shell.h"
 
 bool runShell(const char* command, std::string* output = nullptr)
 {
-	stdout = Test::TestSuite::the().outputNull();
+	stdout = test::TestSuite::the().outputNull();
 
-	Util::Shell $;
+	ruc::Shell $;
 	auto exec = $(command);
 	if (output) {
 		*output = exec.output();
 	}
 
-	stdout = Test::TestSuite::the().outputStd();
+	stdout = test::TestSuite::the().outputStd();
 	return !exec.status() ? true : false;
 }
 

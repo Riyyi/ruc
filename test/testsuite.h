@@ -4,12 +4,12 @@
 #include <cstdio> // FILE
 #include <vector>
 
+#include "ruc/singleton.h"
 #include "testcase.h"
-#include "util/singleton.h"
 
-namespace Test {
+namespace test {
 
-class TestSuite final : public Util::Singleton<TestSuite> {
+class TestSuite final : public ruc::Singleton<TestSuite> {
 public:
 	TestSuite(s);
 	virtual ~TestSuite();
@@ -31,6 +31,6 @@ private:
 	std::vector<TestCase> m_cases;
 };
 
-} // namespace Test
+} // namespace test
 
 #endif // TEST_SUITE_H

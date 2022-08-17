@@ -13,14 +13,14 @@
 		__TEST_CASE_STRUCT(x)                                  \
 		()                                                     \
 		{                                                      \
-			Test::TestSuite::the().addCase(                    \
+			test::TestSuite::the().addCase(                    \
 				{ #x, __TEST_CASE_FUNCTION(x) });              \
 		}                                                      \
 	};                                                         \
 	static struct __TEST_CASE_STRUCT(x) __TEST_CASE_STRUCT(x); \
 	static void __TEST_CASE_FUNCTION(x)()
 
-namespace Test {
+namespace test {
 
 using TestFunction = std::function<void()>;
 
@@ -40,6 +40,6 @@ private:
 	TestFunction m_function;
 };
 
-} // namespace Test
+} // namespace test
 
 #endif // TEST_CASE_H

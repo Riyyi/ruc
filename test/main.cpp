@@ -2,7 +2,7 @@
 
 int main(int, const char*[])
 {
-	Test::TestSuite::the().run();
+	test::TestSuite::the().run();
 
 	return 0;
 }

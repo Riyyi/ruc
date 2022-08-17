@@ -3,15 +3,15 @@
 #include <vector>
 
 #include "macro.h"
+#include "ruc/argparser.h"
 #include "testcase.h"
 #include "testsuite.h"
-#include "util/argparser.h"
 
-bool runParser(std::vector<const char*> arguments, std::function<void(Util::ArgParser&)> initializer = {})
+bool runParser(std::vector<const char*> arguments, std::function<void(ruc::ArgParser&)> initializer = {})
 {
-	stdout = Test::TestSuite::the().outputNull();
+	stdout = test::TestSuite::the().outputNull();
 
-	Util::ArgParser parser;
+	ruc::ArgParser parser;
 	if (initializer) {
 		initializer(parser);
 	}
@@ -19,7 +19,7 @@ bool runParser(std::vector<const char*> arguments, std::function<void(Util::ArgP
 	arguments.insert(arguments.begin(), "app");
 	auto result = parser.parse(arguments.size(), arguments.data());
 
-	stdout = Test::TestSuite::the().outputStd();
+	stdout = test::TestSuite::the().outputStd();
 	return result;
 }
 
@@ -55,7 +55,7 @@ TEST_CASE(RequiredStringArguments)
 	// Single required string argument
 	std::string stringArg1 = "";
 	auto result = runParser({ "my-required-argument" }, [&](auto& parser) {
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringArg1, "my-required-argument");
@@ -63,7 +63,7 @@ TEST_CASE(RequiredStringArguments)
 	// Single required string argument, not given
 	stringArg1 = "";
 	result = runParser({}, [&](auto& parser) {
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(stringArg1, "");
@@ -73,9 +73,9 @@ TEST_CASE(RequiredStringArguments)
 	std::string stringArg2 = "";
 	std::string stringArg3 = "";
 	result = runParser({ "my", "required", "argument" }, [&](auto& parser) {
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
-		parser.addArgument(stringArg2, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
-		parser.addArgument(stringArg3, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
+		parser.addArgument(stringArg2, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
+		parser.addArgument(stringArg3, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringArg1, "my");
@@ -87,9 +87,9 @@ TEST_CASE(RequiredStringArguments)
 	stringArg2 = "";
 	stringArg3 = "";
 	result = runParser({}, [&](auto& parser) {
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
-		parser.addArgument(stringArg2, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
-		parser.addArgument(stringArg3, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
+		parser.addArgument(stringArg2, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
+		parser.addArgument(stringArg3, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(stringArg1, "");
@@ -104,7 +104,7 @@ TEST_CASE(OptionalStringArguments)
 	// Single optional string argument
 	std::string stringArg1 = "";
 	auto result = runParser({ "my-optional-argument" }, [&](auto& parser) {
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringArg1, "my-optional-argument");
@@ -112,7 +112,7 @@ TEST_CASE(OptionalStringArguments)
 	// Single optional string argument, not given
 	stringArg1 = "";
 	result = runParser({}, [&](auto& parser) {
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringArg1, "");
@@ -122,9 +122,9 @@ TEST_CASE(OptionalStringArguments)
 	std::string stringArg2 = "";
 	std::string stringArg3 = "";
 	result = runParser({ "my", "optional", "argument" }, [&](auto& parser) {
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
-		parser.addArgument(stringArg2, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
-		parser.addArgument(stringArg3, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
+		parser.addArgument(stringArg2, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
+		parser.addArgument(stringArg3, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringArg1, "my");
@@ -136,9 +136,9 @@ TEST_CASE(OptionalStringArguments)
 	stringArg2 = "";
 	stringArg3 = "";
 	result = runParser({}, [&](auto& parser) {
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
-		parser.addArgument(stringArg2, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
-		parser.addArgument(stringArg3, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
+		parser.addArgument(stringArg2, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
+		parser.addArgument(stringArg3, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringArg1, "");
@@ -153,7 +153,7 @@ TEST_CASE(NonRequiredStringArguments)
 	// Single non-required string argument
 	std::string stringArg1 = "";
 	auto result = runParser({ "my-non-required-argument" }, [&](auto& parser) {
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringArg1, "my-non-required-argument");
@@ -161,7 +161,7 @@ TEST_CASE(NonRequiredStringArguments)
 	// Single non-required string argument, not given
 	stringArg1 = "";
 	result = runParser({}, [&](auto& parser) {
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringArg1, "");
@@ -171,9 +171,9 @@ TEST_CASE(NonRequiredStringArguments)
 	std::string stringArg2 = "";
 	std::string stringArg3 = "";
 	result = runParser({ "my", "non-required", "argument" }, [&](auto& parser) {
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
-		parser.addArgument(stringArg2, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
-		parser.addArgument(stringArg3, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
+		parser.addArgument(stringArg2, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
+		parser.addArgument(stringArg3, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringArg1, "my");
@@ -185,9 +185,9 @@ TEST_CASE(NonRequiredStringArguments)
 	stringArg2 = "";
 	stringArg3 = "";
 	result = runParser({}, [&](auto& parser) {
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
-		parser.addArgument(stringArg2, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
-		parser.addArgument(stringArg3, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
+		parser.addArgument(stringArg2, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
+		parser.addArgument(stringArg3, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringArg1, "");
@@ -202,7 +202,7 @@ TEST_CASE(VectorStringArguments)
 	// Required vector string argument, not given
 	std::vector<std::string> vectorArg1 = {};
 	auto result = runParser({}, [&](auto& parser) {
-		parser.addArgument(vectorArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addArgument(vectorArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(vectorArg1.size(), 0);
@@ -210,7 +210,7 @@ TEST_CASE(VectorStringArguments)
 	// Required vector string argument, one given
 	vectorArg1 = {};
 	result = runParser({ "foo" }, [&](auto& parser) {
-		parser.addArgument(vectorArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addArgument(vectorArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(vectorArg1.size(), 1);
@@ -221,7 +221,7 @@ TEST_CASE(VectorStringArguments)
 	// Required vector string argument, two given
 	vectorArg1 = {};
 	result = runParser({ "hello", "world" }, [&](auto& parser) {
-		parser.addArgument(vectorArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addArgument(vectorArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(vectorArg1.size(), 2);
@@ -240,9 +240,9 @@ TEST_CASE(CombinationOfNonRequiredArguments)
 	double doubleArg1 = 0;
 	std::string stringArg1 = "";
 	auto result = runParser({ "optional argument" }, [&](auto& parser) {
-		parser.addArgument(intArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
-		parser.addArgument(doubleArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
+		parser.addArgument(intArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
+		parser.addArgument(doubleArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(intArg1, 0);
@@ -254,9 +254,9 @@ TEST_CASE(CombinationOfNonRequiredArguments)
 	doubleArg1 = 0;
 	stringArg1 = "";
 	result = runParser({ "999.999", "optional argument" }, [&](auto& parser) {
-		parser.addArgument(intArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
-		parser.addArgument(doubleArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
+		parser.addArgument(intArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
+		parser.addArgument(doubleArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(intArg1, 0);
@@ -268,9 +268,9 @@ TEST_CASE(CombinationOfNonRequiredArguments)
 	doubleArg1 = 0;
 	stringArg1 = "";
 	result = runParser({ "999,999", "optional argument" }, [&](auto& parser) {
-		parser.addArgument(intArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
-		parser.addArgument(doubleArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
+		parser.addArgument(intArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
+		parser.addArgument(doubleArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(intArg1, 0);
@@ -282,9 +282,9 @@ TEST_CASE(CombinationOfNonRequiredArguments)
 	intArg1 = 0;
 	doubleArg1 = 0;
 	result = runParser({ "999.999", "optional argument" }, [&](auto& parser) {
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
-		parser.addArgument(intArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
-		parser.addArgument(doubleArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
+		parser.addArgument(intArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
+		parser.addArgument(doubleArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(stringArg1, "999.999");
@@ -360,7 +360,7 @@ TEST_CASE(SingleRequiredStringOptions)
 	// Single required string short option
 	std::string stringOpt1 = "";
 	auto result = runParser({ "-s", "my-required-argument" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "my-required-argument");
@@ -368,7 +368,7 @@ TEST_CASE(SingleRequiredStringOptions)
 	// Single required string short option, given directly after
 	stringOpt1 = "";
 	result = runParser({ "-smy-required-argument" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "my-required-argument");
@@ -376,7 +376,7 @@ TEST_CASE(SingleRequiredStringOptions)
 	// Single required string short option, empty given
 	stringOpt1 = "";
 	result = runParser({ "-s" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(stringOpt1, "");
@@ -384,7 +384,7 @@ TEST_CASE(SingleRequiredStringOptions)
 	// Single required string short option, not given
 	stringOpt1 = "";
 	result = runParser({}, [&](auto& parser) {
-		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "");
@@ -392,7 +392,7 @@ TEST_CASE(SingleRequiredStringOptions)
 	// Single required string long option
 	stringOpt1 = "";
 	result = runParser({ "--string", "my-required-argument" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "my-required-argument");
@@ -400,7 +400,7 @@ TEST_CASE(SingleRequiredStringOptions)
 	// Single required string long option, given directly after
 	stringOpt1 = "";
 	result = runParser({ "--string=my-required-argument" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "my-required-argument");
@@ -408,7 +408,7 @@ TEST_CASE(SingleRequiredStringOptions)
 	// Single required string long option, empty given
 	stringOpt1 = "";
 	result = runParser({ "--string" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(stringOpt1, "");
@@ -416,7 +416,7 @@ TEST_CASE(SingleRequiredStringOptions)
 	// Single required string long option, not given
 	stringOpt1 = "";
 	result = runParser({}, [&](auto& parser) {
-		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "");
@@ -430,8 +430,8 @@ TEST_CASE(SingleOptionalStringOptions)
 	std::string stringOpt1 = "";
 	std::string stringArg1 = "";
 	auto result = runParser({ "-s", "my-optional-argument" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
+		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "");
@@ -440,7 +440,7 @@ TEST_CASE(SingleOptionalStringOptions)
 	// Single optional string short option, given directly after
 	stringOpt1 = "";
 	result = runParser({ "-smy-optional-argument" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
+		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "my-optional-argument");
@@ -448,7 +448,7 @@ TEST_CASE(SingleOptionalStringOptions)
 	// Single optional string short option, empty given
 	stringOpt1 = "";
 	result = runParser({ "-s" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
+		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "");
@@ -456,7 +456,7 @@ TEST_CASE(SingleOptionalStringOptions)
 	// Single optional string short option, not given
 	stringOpt1 = "";
 	result = runParser({}, [&](auto& parser) {
-		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
+		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "");
@@ -465,8 +465,8 @@ TEST_CASE(SingleOptionalStringOptions)
 	stringOpt1 = "";
 	stringArg1 = "";
 	result = runParser({ "--string", "my-optional-argument" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
+		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "");
@@ -475,7 +475,7 @@ TEST_CASE(SingleOptionalStringOptions)
 	// Single optional string long option, given directly after
 	stringOpt1 = "";
 	result = runParser({ "--string=my-optional-argument" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
+		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "my-optional-argument");
@@ -483,7 +483,7 @@ TEST_CASE(SingleOptionalStringOptions)
 	// Single optional string long option, empty given
 	stringOpt1 = "";
 	result = runParser({ "--string" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
+		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "");
@@ -491,7 +491,7 @@ TEST_CASE(SingleOptionalStringOptions)
 	// Single optional string long option, not given
 	stringOpt1 = "";
 	result = runParser({}, [&](auto& parser) {
-		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, Util::ArgParser::Required::Optional);
+		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, ruc::ArgParser::Required::Optional);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "");
@@ -505,8 +505,8 @@ TEST_CASE(SingleNonRequiredStringOptions)
 	std::string stringOpt1 = "";
 	std::string stringArg1 = "";
 	auto result = runParser({ "-s", "my-non-required-argument" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
+		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "");
@@ -515,7 +515,7 @@ TEST_CASE(SingleNonRequiredStringOptions)
 	// Single non-required string short option, given directly after
 	stringOpt1 = "";
 	result = runParser({ "-smy-non-required-argument" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
+		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(stringOpt1, "");
@@ -523,7 +523,7 @@ TEST_CASE(SingleNonRequiredStringOptions)
 	// Single non-required string short option, empty given
 	stringOpt1 = "";
 	result = runParser({ "-s" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
+		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "");
@@ -531,7 +531,7 @@ TEST_CASE(SingleNonRequiredStringOptions)
 	// Single non-required string short option, not given
 	stringOpt1 = "";
 	result = runParser({}, [&](auto& parser) {
-		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
+		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "");
@@ -540,8 +540,8 @@ TEST_CASE(SingleNonRequiredStringOptions)
 	stringOpt1 = "";
 	stringArg1 = "";
 	result = runParser({ "--string", "my-non-required-argument" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
-		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
+		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
+		parser.addArgument(stringArg1, nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "");
@@ -550,7 +550,7 @@ TEST_CASE(SingleNonRequiredStringOptions)
 	// Single non-required string long option, given directly after
 	stringOpt1 = "";
 	result = runParser({ "--string=my-non-required-argument" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
+		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(stringOpt1, "");
@@ -558,7 +558,7 @@ TEST_CASE(SingleNonRequiredStringOptions)
 	// Single non-required string long option, empty given
 	stringOpt1 = "";
 	result = runParser({ "--string" }, [&](auto& parser) {
-		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
+		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "");
@@ -566,7 +566,7 @@ TEST_CASE(SingleNonRequiredStringOptions)
 	// Single non-required string long option, not given
 	stringOpt1 = "";
 	result = runParser({}, [&](auto& parser) {
-		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, Util::ArgParser::Required::No);
+		parser.addOption(stringOpt1, '\0', "string", nullptr, nullptr, nullptr, ruc::ArgParser::Required::No);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(stringOpt1, "");
@@ -579,7 +579,7 @@ TEST_CASE(NumberOptions)
 	// Required int short option
 	int intOpt1 = 0;
 	auto result = runParser({ "-i", "2147483647" }, [&](auto& parser) {
-		parser.addOption(intOpt1, 'i', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(intOpt1, 'i', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(intOpt1, 2147483647);
@@ -587,7 +587,7 @@ TEST_CASE(NumberOptions)
 	// Required int short option, overflown value given
 	intOpt1 = 0;
 	result = runParser({ "-i", "2147483648" }, [&](auto& parser) {
-		parser.addOption(intOpt1, 'i', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(intOpt1, 'i', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(intOpt1, 0);
@@ -595,7 +595,7 @@ TEST_CASE(NumberOptions)
 	// Required int short option, empty given
 	intOpt1 = 0;
 	result = runParser({ "-i" }, [&](auto& parser) {
-		parser.addOption(intOpt1, 'i', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(intOpt1, 'i', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(intOpt1, 0);
@@ -603,7 +603,7 @@ TEST_CASE(NumberOptions)
 	// Required unsigned int short option
 	unsigned int unsignedIntOpt1 = 0;
 	result = runParser({ "-u", "4294967295" }, [&](auto& parser) {
-		parser.addOption(unsignedIntOpt1, 'u', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(unsignedIntOpt1, 'u', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(unsignedIntOpt1, 4294967295);
@@ -611,7 +611,7 @@ TEST_CASE(NumberOptions)
 	// Required unsigned int short option, overflown value given
 	unsignedIntOpt1 = 0;
 	result = runParser({ "-u", "4294967296" }, [&](auto& parser) {
-		parser.addOption(unsignedIntOpt1, 'u', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(unsignedIntOpt1, 'u', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(unsignedIntOpt1, 0);
@@ -619,7 +619,7 @@ TEST_CASE(NumberOptions)
 	// Required unsigned int short option, empty given
 	unsignedIntOpt1 = 0;
 	result = runParser({ "-u" }, [&](auto& parser) {
-		parser.addOption(unsignedIntOpt1, 'u', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(unsignedIntOpt1, 'u', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(unsignedIntOpt1, 0);
@@ -627,7 +627,7 @@ TEST_CASE(NumberOptions)
 	// Required double short option
 	double doubleOpt1 = 0;
 	result = runParser({ "-d", "999.999" }, [&](auto& parser) {
-		parser.addOption(doubleOpt1, 'd', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(doubleOpt1, 'd', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(doubleOpt1, 999.999);
@@ -635,7 +635,7 @@ TEST_CASE(NumberOptions)
 	// Required double short option, empty given
 	doubleOpt1 = 0;
 	result = runParser({ "-d" }, [&](auto& parser) {
-		parser.addOption(doubleOpt1, 'd', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(doubleOpt1, 'd', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(doubleOpt1, 0);
@@ -648,7 +648,7 @@ TEST_CASE(VectorStringOptions)
 	// Required vector string short option, not given
 	std::vector<std::string> vectorOpt1 = {};
 	auto result = runParser({}, [&](auto& parser) {
-		parser.addOption(vectorOpt1, 'v', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(vectorOpt1, 'v', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(vectorOpt1.size(), 0);
@@ -656,7 +656,7 @@ TEST_CASE(VectorStringOptions)
 	// Required vector string short option, empty given
 	vectorOpt1 = {};
 	result = runParser({ "-v" }, [&](auto& parser) {
-		parser.addOption(vectorOpt1, 'v', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(vectorOpt1, 'v', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(vectorOpt1.size(), 0);
@@ -664,7 +664,7 @@ TEST_CASE(VectorStringOptions)
 	// Required vector string short option, one given
 	vectorOpt1 = {};
 	result = runParser({ "-v", "a vector argument!" }, [&](auto& parser) {
-		parser.addOption(vectorOpt1, 'v', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(vectorOpt1, 'v', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(vectorOpt1.size(), 1);
@@ -675,7 +675,7 @@ TEST_CASE(VectorStringOptions)
 	// Required vector string short option, two given
 	vectorOpt1 = {};
 	result = runParser({ "-v", "hello", "-v", "world" }, [&](auto& parser) {
-		parser.addOption(vectorOpt1, 'v', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(vectorOpt1, 'v', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(vectorOpt1.size(), 2);
@@ -687,7 +687,7 @@ TEST_CASE(VectorStringOptions)
 	// Required vector string short option, two given directly after
 	vectorOpt1 = {};
 	result = runParser({ "-vhello", "-vworld" }, [&](auto& parser) {
-		parser.addOption(vectorOpt1, 'v', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(vectorOpt1, 'v', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(vectorOpt1.size(), 2);
@@ -699,7 +699,7 @@ TEST_CASE(VectorStringOptions)
 	// Required vector string long option, empty given
 	vectorOpt1 = {};
 	result = runParser({ "--vector" }, [&](auto& parser) {
-		parser.addOption(vectorOpt1, '\0', "vector", nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(vectorOpt1, '\0', "vector", nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, false);
 	EXPECT_EQ(vectorOpt1.size(), 0);
@@ -707,7 +707,7 @@ TEST_CASE(VectorStringOptions)
 	// Required vector string long option, one given
 	vectorOpt1 = {};
 	result = runParser({ "--vector", "a vector argument!" }, [&](auto& parser) {
-		parser.addOption(vectorOpt1, '\0', "vector", nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(vectorOpt1, '\0', "vector", nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(vectorOpt1.size(), 1);
@@ -718,7 +718,7 @@ TEST_CASE(VectorStringOptions)
 	// Required vector string long option, two given
 	vectorOpt1 = {};
 	result = runParser({ "--vector", "hello", "--vector", "world" }, [&](auto& parser) {
-		parser.addOption(vectorOpt1, '\0', "vector", nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(vectorOpt1, '\0', "vector", nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(vectorOpt1.size(), 2);
@@ -730,7 +730,7 @@ TEST_CASE(VectorStringOptions)
 	// Required vector string long option, two given directly after
 	vectorOpt1 = {};
 	result = runParser({ "--vector=hello", "--vector=world" }, [&](auto& parser) {
-		parser.addOption(vectorOpt1, '\0', "vector", nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(vectorOpt1, '\0', "vector", nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 	});
 	EXPECT_EQ(result, true);
 	EXPECT_EQ(vectorOpt1.size(), 2);
@@ -750,7 +750,7 @@ TEST_CASE(MultipleOptions)
 	std::vector<std::string> vectorArg1 = {};
 	auto result = runParser({ "-b", "something", "-s", "a-string-value" }, [&](auto& parser) {
 		parser.addOption(boolOpt1, 'b', nullptr, nullptr, nullptr);
-		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, Util::ArgParser::Required::Yes);
+		parser.addOption(stringOpt1, 's', nullptr, nullptr, nullptr, nullptr, ruc::ArgParser::Required::Yes);
 		parser.addArgument(vectorArg1, nullptr, nullptr, nullptr);
 	});
 	EXPECT_EQ(result, true);

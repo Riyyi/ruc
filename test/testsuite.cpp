@@ -3,10 +3,10 @@
 #include <string>
 #include <vector>
 
+#include "ruc/timer.h"
 #include "testsuite.h"
-#include "util/timer.h"
 
-namespace Test {
+namespace test {
 
 TestSuite::TestSuite(s)
 {
@@ -32,7 +32,7 @@ void TestSuite::run()
 	printf("\n");
 	printf("---- Running %zu Test Cases ----\n", m_cases.size());
 
-	Util::Timer totalTimer;
+	ruc::Timer totalTimer;
 
 	size_t caseFailedCount = 0;
 	for (size_t i = 0; i < m_cases.size(); ++i) {
@@ -40,7 +40,7 @@ void TestSuite::run()
 		printf(" START  %s (%zu/%zu)\n", m_cases.at(i).name(), i + 1, m_cases.size());
 		m_currentTestCasePassed = true;
 
-		Util::Timer caseTimer;
+		ruc::Timer caseTimer;
 		m_cases.at(i).function()();
 		double elapsed = caseTimer.elapsedNanoseconds();
 
@@ -58,7 +58,7 @@ void TestSuite::run()
 		}
 
 		printf("%s %s %s(", state.c_str(), m_cases.at(i).name(), escapeGrey);
-		Util::Timer::fancyPrint(elapsed);
+		ruc::Timer::fancyPrint(elapsed);
 		printf(")%s\n", escapeReset);
 	}
 
@@ -69,8 +69,8 @@ void TestSuite::run()
 	       m_cases.size());
 
 	printf("Time:   ");
-	Util::Timer::fancyPrint(totalTimer.elapsedNanoseconds());
+	ruc::Timer::fancyPrint(totalTimer.elapsedNanoseconds());
 	printf("\n");
 }
 
-} // namespace Test
+} // namespace test
