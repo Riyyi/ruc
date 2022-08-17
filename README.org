@@ -1,0 +1,6 @@
+#+TITLE: Riyyi's Utilities for C++
+#+AUTHOR: Riyyi
+#+LANGUAGE: en
+#+OPTIONS: toc:nil
+
+Utility library for C++.
