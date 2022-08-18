@@ -16,19 +16,24 @@
 #include "ruc/format/format.h"
 #include "ruc/meta/compiler.h"
 
-#define CRASH() asm volatile("int $0x03");
+#define CRASH() ruc::__crash()
 
 #ifndef NDEBUG
 	#define VERIFY(expr, ...) (static_cast<bool>(expr) ? (void)0 : ruc::__assertion_failed(#expr, __FILE__, __LINE__, FUNCTION_MACRO __VA_OPT__(, ) __VA_ARGS__))
 	#define VERIFY_NOT_REACHED() VERIFY(false)
 #else
-	#define VERIFY(expr, ...) (static_cast<bool>(expr) ? (void)0 : CRASH()
-	#define VERIFY_NOT_REACHED() CRASH()
+	#define VERIFY(expr, ...) (static_cast<bool>(expr) ? (void)0 : CRASH())
+	#define VERIFY_NOT_REACHED() VERIFY(false)
 #endif
 
-#ifndef NDEBUG
 namespace ruc {
 
+inline void __crash()
+{
+	asm volatile("int $0x03");
+}
+
+#ifndef NDEBUG
 template<typename... Parameters>
 inline void __assertion_failed(const char* assertion, const char* file, uint32_t line, const char* function, const Parameters&... parameters)
 {
@@ -91,6 +96,6 @@ inline void __assertion_failed(const char* assertion, const char* file, uint32_t
 
 	CRASH();
 }
+#endif
 
 } // namespace ruc
-#endif
