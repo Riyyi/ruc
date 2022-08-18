@@ -77,7 +77,6 @@ if (RUC_BUILD_TESTS)
 	# Define test source files
 	file(GLOB_RECURSE TEST_SOURCES "test/*.cpp")
 	set(TEST_SOURCES ${TEST_SOURCES} ${LIBRARY_SOURCES})
-	list(REMOVE_ITEM TEST_SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
 	add_executable(${PROJECT}-unit-test ${TEST_SOURCES})
 	target_include_directories(${PROJECT}-unit-test PRIVATE
