@@ -5,9 +5,14 @@
 
 # ------------------------------------------
 
-# Get the full path to this script while handling spaces and symlinks correctly
-scriptPath="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
-cd "$scriptPath/.." || exit 1
+b="$(tput bold)"
+red="$(tput setf 4)"
+n="$(tput sgr0)"
+
+if [ ! -d ".git" ]; then
+   echo "${b}${red}Error:${n} please run this script from the project root" >&2
+   exit 1
+fi
 
 if ! command -v shellcheck > /dev/null 2>&1; then
 	echo "shellcheck is not available, but shell script files need linting!"
@@ -19,7 +24,6 @@ files="${1:-$(git --no-pager diff --cached --name-only)}"
 files="$(echo "$files" | grep -E '\.sh$')"
 
 if [ -z "$files" ]; then
-	echo "No .sh files to check."
 	exit
 fi
 

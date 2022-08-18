@@ -37,14 +37,8 @@ if [ ! -d ".git" ]; then
    exit 1
 fi
 
-currentDir="$(pwd -P)"
-
 # Get the path from the project root to the script
 subDir="$(dirname -- "$0")"
-
-# Get the full path to this script while handling spaces and symlinks correctly
-scriptPath="$(cd -P -- "$subDir" && pwd -P)"
-cd "$scriptPath/.." || exit 1
 
 hooks="
 lint-ci.sh
@@ -53,7 +47,7 @@ lint-ci.sh
 install() {
 	echo "Installing pre-commit hooks"
 
-	preCommit="$currentDir/.git/hooks/pre-commit"
+	preCommit=".git/hooks/pre-commit"
 	if ! test -f "$preCommit"; then
 		touch "$preCommit"
 		chmod +x "$preCommit"
