@@ -40,33 +40,37 @@ fi
 # Get the path from the project root to the script
 subDir="$(dirname -- "$0")"
 
-hooks="
-lint-ci.sh
-"
+create() {
+	file="$1"
+	if ! test -f "$file"; then
+		touch "$file"
+		chmod +x "$file"
+		echo "#!/bin/sh" > "$file"
+	fi
+}
 
 install() {
-	echo "Installing pre-commit hooks"
+	echo "Installing commit hooks"
 
 	preCommit=".git/hooks/pre-commit"
-	if ! test -f "$preCommit"; then
-		touch "$preCommit"
-		chmod +x "$preCommit"
-		echo "#!/bin/sh" > "$preCommit"
-	fi
+	create "$preCommit"
+	sed -Ei "/lint-ci.sh/d" "$preCommit"
+	sed -Ei "\$ a $subDir/lint-ci.sh" "$preCommit"
 
-	for hook in $hooks; do
-		sed -Ei "/$hook/d" "$preCommit"
-		sed -Ei "\$ a $subDir/$hook" "$preCommit"
-	done
+	commitMsg=".git/hooks/commit-msg"
+	create "$commitMsg"
+	sed -Ei "/lint-commit.sh/d" "$commitMsg"
+	sed -Ei "\$ a $subDir/lint-commit.sh" "$commitMsg"
 }
 
 remove() {
-	echo "Removing pre-commit hooks"
+	echo "Removing commit hooks"
 
 	preCommit=".git/hooks/pre-commit"
-	for hook in $hooks; do
-		sed -Ei "/$hook/d" "$preCommit"
-	done
+	sed -Ei "/lint-ci.sh/d" "$preCommit"
+
+	commitMsg=".git/hooks/commit-msg"
+	sed -Ei "/lint-commit.sh/d" "$commitMsg"
 }
 
 # Command handling
