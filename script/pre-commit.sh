@@ -60,7 +60,7 @@ install() {
 	commitMsg=".git/hooks/commit-msg"
 	create "$commitMsg"
 	sed -Ei "/lint-commit.sh/d" "$commitMsg"
-	sed -Ei "\$ a $subDir/lint-commit.sh" "$commitMsg"
+	sed -Ei "\$ a $subDir/lint-commit.sh \"\$@\"" "$commitMsg"
 }
 
 remove() {
