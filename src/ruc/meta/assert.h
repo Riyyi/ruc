@@ -71,8 +71,8 @@ inline void __assertion_failed(const char* assertion, const char* file, uint32_t
 		fprintf(stderr, ": ");
 		// Cant use the formatting library to print asserts caused by the formatting library
 		std::string_view functionString = function;
-		if (functionString.find("ruc::format::") != std::string_view::npos
-		    && functionString.find("ruc::GenericLexer::") != std::string_view::npos) {
+		if (functionString.find("ruc::format::") == std::string_view::npos
+		    && functionString.find("ruc::GenericLexer::") == std::string_view::npos) {
 			std::string message;
 			formatTo(message, parameters...);
 			fprintf(stderr, "%s", message.c_str());
