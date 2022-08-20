@@ -7,27 +7,28 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 
 namespace ruc {
 
 class File {
 public:
-	File(const std::string& path);
+	File(std::string_view path);
 	virtual ~File();
 
-	static File create(const std::string& path);
+	static File create(std::string_view path);
 
 	void clear();
-	File& append(const std::string& data);
-	File& replace(size_t index, size_t length, const std::string& data);
+	File& append(std::string_view data);
+	File& replace(size_t index, size_t length, std::string_view data);
 	File& flush();
 
 	const char* c_str() const { return m_data.c_str(); }
 	const std::string& data() const { return m_data; }
-	const std::string& path() const { return m_path; }
+	std::string_view path() const { return m_path; }
 
 private:
-	std::string m_path;
+	std::string_view m_path;
 	std::string m_data;
 };
 
