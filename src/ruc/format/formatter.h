@@ -314,6 +314,8 @@ struct Formatter<Specifier> : Formatter<std::nullptr_t> {
 
 } // namespace ruc::format
 
+using ruc::format::Formatter;
+
 #if 0
 
 TODO:
