@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <cstdio>  // FILE, fputs, stdout, stderr
+#include <cstdio>  // FILE, fflush, fputs, stdout, stderr
 #include <iomanip> // setprecision
 #include <ios>     // defaultfloat, fixed
 #include <sstream> // stringstream
@@ -22,6 +22,7 @@ void variadicPrint(FILE* file, std::string_view format, TypeErasedParameters& pa
 
 	std::string string = stream.str();
 	fputs(string.c_str(), file);
+	fflush(file);
 }
 
 // -----------------------------------------
