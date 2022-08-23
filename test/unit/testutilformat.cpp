@@ -513,5 +513,5 @@ TEST_CASE(FormatContainers)
 }
 
 // Local Variables:
-// lsp-in-cpp-project-cache: nil
+// lsp-in-cpp-project-cache: (nil)
 // End:

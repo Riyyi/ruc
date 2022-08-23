@@ -411,6 +411,8 @@ constexpr void Parser::checkSpecifierType(const Specifier& specifier, ParameterT
 	case ParameterType::Container:
 		checkSpecifierContainerType(specifier);
 		break;
+	case ParameterType::UserDefined:
+		break;
 	default:
 		VERIFY_NOT_REACHED();
 	}

@@ -32,6 +32,7 @@ public:
 		String,
 		Pointer,
 		Container,
+		UserDefined,
 	};
 
 	Parser(std::string_view format, size_t parameterCount);
