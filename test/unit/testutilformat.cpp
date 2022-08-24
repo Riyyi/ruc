@@ -55,7 +55,7 @@ TEST_CASE(FormatIntegral)
 	result = format("{}", u32);
 	EXPECT_EQ(result, "4294967295");
 
-	size_t u64 = 18446744073709551615; // long unsigned int
+	size_t u64 = 18446744073709551615u; // long unsigned int
 	result = format("{}", u64);
 	EXPECT_EQ(result, "18446744073709551615");
 }
