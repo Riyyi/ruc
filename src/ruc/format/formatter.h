@@ -108,9 +108,11 @@ struct Formatter<T> {
 		uint8_t base = 0;
 		bool uppercase = false;
 		switch (specifier.type) {
+		case PresentationType::Binary:
+			base = 2;
+			break;
 		case PresentationType::BinaryUppercase:
 			uppercase = true;
-		case PresentationType::Binary:
 			base = 2;
 			break;
 		case PresentationType::Octal:
@@ -120,9 +122,11 @@ struct Formatter<T> {
 		case PresentationType::Decimal:
 			base = 10;
 			break;
+		case PresentationType::Hex:
+			base = 16;
+			break;
 		case PresentationType::HexUppercase:
 			uppercase = true;
-		case PresentationType::Hex:
 			base = 16;
 			break;
 		default:
