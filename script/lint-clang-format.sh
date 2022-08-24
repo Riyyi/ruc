@@ -31,7 +31,7 @@ else
 Either skip this script, or install clang-format-11."
 fi
 
-files="${1:-$(git --no-pager diff --cached --name-only)}"
+files="${1:-$(git --no-pager diff --cached --name-only --diff-filter=d)}"
 files="$(echo "$files" | grep -E '\.(cpp|h)$')"
 
 if [ -z "$files" ]; then

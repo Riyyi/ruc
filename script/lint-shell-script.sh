@@ -23,7 +23,7 @@ if ! command -v shellcheck > /dev/null 2>&1; then
 Either skip this script, or install shellcheck."
 fi
 
-files="${1:-$(git --no-pager diff --cached --name-only)}"
+files="${1:-$(git --no-pager diff --cached --name-only --diff-filter=d)}"
 files="$(echo "$files" | grep -E '\.sh$')"
 
 if [ -z "$files" ]; then

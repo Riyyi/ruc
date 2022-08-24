@@ -37,7 +37,7 @@ fi
 subDir="$(dirname -- "$0")"
 
 # Get all files staged for commit
-files="$(git --no-pager diff --cached --name-only)"
+files="$(git --no-pager diff --cached --name-only --diff-filter=d)"
 
 failures=0
 
