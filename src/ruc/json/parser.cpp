@@ -266,7 +266,7 @@ Value Parser::consumeString()
 				break;
 			default:
 				char buffer[7];
-				sprintf(buffer, "\\u%0.4X", character);
+				sprintf(buffer, "\\u%.4X", character);
 				return std::string(buffer);
 				break;
 			}
