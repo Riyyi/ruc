@@ -4,8 +4,10 @@
 # Set project name
 set(PROJECT "ruc")
 
-# Unit tests
 option(RUC_BUILD_TESTS "Build the RUC test programs" ON)
+# Options
+option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
+option(RUC_BUILD_TESTS "Build the RUC test programs" OFF)
 
 # ------------------------------------------
 
@@ -55,7 +57,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Define library source files
 file(GLOB_RECURSE LIBRARY_SOURCES "src/*.cpp")
 
-add_library(${PROJECT} STATIC ${LIBRARY_SOURCES})
+add_library(${PROJECT} ${LIBRARY_SOURCES})
 target_include_directories(${PROJECT} PRIVATE
 	"src")
 
@@ -65,7 +67,7 @@ target_include_directories(${PROJECT} PRIVATE
 # Define source files
 file(GLOB TEST_LIBRARY_SOURCES "test/*.cpp" "src/ruc/timer.cpp")
 
-add_library(${PROJECT}-test STATIC ${TEST_LIBRARY_SOURCES})
+add_library(${PROJECT}-test ${TEST_LIBRARY_SOURCES})
 target_include_directories(${PROJECT}-test PRIVATE
 	"src"
 	"test")
