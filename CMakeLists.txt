@@ -77,11 +77,12 @@ target_include_directories(${PROJECT}-test PRIVATE
 
 if (RUC_BUILD_TESTS)
 	# Define test source files
-	file(GLOB_RECURSE TEST_SOURCES "test/*.cpp")
-	set(TEST_SOURCES ${TEST_SOURCES} ${LIBRARY_SOURCES})
+	file(GLOB_RECURSE TEST_SOURCES "test/unit/*.cpp")
 
 	add_executable(${PROJECT}-unit-test ${TEST_SOURCES})
 	target_include_directories(${PROJECT}-unit-test PRIVATE
 		"src"
 		"test")
+	target_link_libraries(${PROJECT}-unit-test ruc)
+	target_link_libraries(${PROJECT}-unit-test ruc-test)
 endif()
