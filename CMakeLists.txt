@@ -4,10 +4,13 @@
 # Set project name
 set(PROJECT "ruc")
 
-option(RUC_BUILD_TESTS "Build the RUC test programs" ON)
+if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+	set(RUC_STANDALONE TRUE)
+endif()
+
 # Options
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
-option(RUC_BUILD_TESTS "Build the RUC test programs" OFF)
+option(RUC_BUILD_TESTS "Build the RUC test programs" ${RUC_STANDALONE})
 
 # ------------------------------------------
 
