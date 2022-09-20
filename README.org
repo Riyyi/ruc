@@ -9,3 +9,9 @@ Utility library for C++.
 - Formatting library
 - JSON parsing
 - Unit test macros
+
+** Formatting library
+
+The format specification has been heavily inspired by the ~{fmt}~ library, most of the [[https://fmt.dev/latest/syntax.html#format-specification-mini-language][mini-language]] is supported.
+
+*Note*: Development was previously done at: [[https://github.com/riyyi/manafiles/tree/6f0e3d6063ab75ad81899135689569e440ddb813/src/util][manafiles/src/util]] and [[https://github.com/riyyi/manafiles/tree/6f0e3d6063ab75ad81899135689569e440ddb813/test][manafiles/test]].
