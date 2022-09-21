@@ -7,7 +7,8 @@
 #pragma once
 
 #include <algorithm> // transform
-#include <cstddef>   // nullptr_t
+#include <cstddef>   // nullptr_t, size_t
+#include <cstdint>   // int32_t, int64_t, uint32_t
 #include <map>
 #include <string>
 #include <unordered_map>
@@ -45,10 +46,31 @@ void fromJson(const Json& json, bool& boolean)
 }
 
 template<typename Json>
-void fromJson(const Json& json, int& number)
+void fromJson(const Json& json, int32_t& number)
 {
 	VERIFY(json.type() == Json::Type::Number);
-	number = (int)json.asDouble();
+	number = static_cast<int32_t>(json.asDouble());
+}
+
+template<typename Json>
+void fromJson(const Json& json, uint32_t& number)
+{
+	VERIFY(json.type() == Json::Type::Number);
+	number = static_cast<uint32_t>(json.asDouble());
+}
+
+template<typename Json>
+void fromJson(const Json& json, int64_t& number)
+{
+	VERIFY(json.type() == Json::Type::Number);
+	number = static_cast<int64_t>(json.asDouble());
+}
+
+template<typename Json>
+void fromJson(const Json& json, size_t& number) // uint64_t
+{
+	VERIFY(json.type() == Json::Type::Number);
+	number = static_cast<size_t>(json.asDouble());
 }
 
 template<typename Json>

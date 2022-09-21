@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <cassert> // assert
-#include <cstddef> // nullptr_t
+#include <cstddef> // nullptr_t, size_t
+#include <cstdint> // int32_t, int64_t, uint32_t
 #include <map>
 #include <string>
 #include <unordered_map>
@@ -31,11 +31,35 @@ struct jsonConstructor {
 	}
 
 	template<typename Json>
-	static void construct(Json& json, int number)
+	static void construct(Json& json, int32_t number)
 	{
 		json.destroy();
 		json.m_type = Json::Type::Number;
-		json.m_value.number = (double)number;
+		json.m_value.number = static_cast<double>(number);
+	}
+
+	template<typename Json>
+	static void construct(Json& json, int64_t number)
+	{
+		json.destroy();
+		json.m_type = Json::Type::Number;
+		json.m_value.number = static_cast<double>(number);
+	}
+
+	template<typename Json>
+	static void construct(Json& json, uint32_t number)
+	{
+		json.destroy();
+		json.m_type = Json::Type::Number;
+		json.m_value.number = static_cast<double>(number);
+	}
+
+	template<typename Json>
+	static void construct(Json& json, size_t number)
+	{
+		json.destroy();
+		json.m_type = Json::Type::Number;
+		json.m_value.number = static_cast<double>(number);
 	}
 
 	template<typename Json>
