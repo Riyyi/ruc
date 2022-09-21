@@ -6,7 +6,9 @@
 
 #pragma once
 
-#include <cassert>
+#include <cstdlib> // malloc
+
+#include "meta/assert.h"
 
 namespace ruc {
 
@@ -16,7 +18,10 @@ public:
 	static inline T& the()
 	{
 		if (s_instance == nullptr) {
-			s_instance = new T { s {} };
+			// Allocate memory for this instance
+			s_instance = static_cast<T*>(malloc(sizeof(T)));
+			// Call the constructor using placement new
+			new (s_instance) T { s {} };
 		}
 
 		return *s_instance;
@@ -24,10 +29,9 @@ public:
 
 	static inline void destroy()
 	{
-		if (s_instance) {
-			delete s_instance;
-		}
+		VERIFY(s_instance, "singleton does not exist");
 
+		delete s_instance;
 		s_instance = nullptr;
 	}
 
