@@ -81,6 +81,11 @@ void Formatter<const char*>::format(Builder& builder, const char* value) const
 		value != nullptr ? std::string_view { value, strlen(value) } : "nullptr");
 }
 
+void Formatter<const unsigned char*>::format(Builder& builder, const unsigned char* value) const
+{
+	return Formatter<const char*>::format(builder, reinterpret_cast<const char*>(value));
+}
+
 // Pointer
 
 void Formatter<std::nullptr_t>::format(Builder& builder, std::nullptr_t) const

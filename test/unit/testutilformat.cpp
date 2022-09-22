@@ -109,6 +109,14 @@ TEST_CASE(FormatString)
 	result = format("{}", cString);
 	EXPECT_EQ(result, "C string");
 
+	const unsigned char unsignedCharArray[] = "µnsïgned çhãr";
+	result = format("{}", unsignedCharArray);
+	EXPECT_EQ(result, "µnsïgned çhãr");
+
+	const unsigned char* unsignedCharPointer = &unsignedCharArray[0];
+	result = format("{}", unsignedCharPointer);
+	EXPECT_EQ(result, "µnsïgned çhãr");
+
 	std::string string = "string";
 	result = format("{}", string);
 	EXPECT_EQ(result, "string");

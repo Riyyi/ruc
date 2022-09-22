@@ -199,6 +199,19 @@ template<size_t N>
 struct Formatter<char[N]> : Formatter<const char*> {
 };
 
+template<>
+struct Formatter<const unsigned char*> : Formatter<const char*> {
+	void format(Builder& builder, const unsigned char* value) const;
+};
+
+template<>
+struct Formatter<unsigned char*> : Formatter<const unsigned char*> {
+};
+
+template<size_t N>
+struct Formatter<unsigned char[N]> : Formatter<const unsigned char*> {
+};
+
 // Pointer
 
 template<typename T>
