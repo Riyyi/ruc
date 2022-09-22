@@ -6,8 +6,8 @@
 
 #include <cstdint> // int32_t
 #include <filesystem>
-#include <fstream> // ifstream, ios, ofstream
-#include <memory>  // make_unique
+#include <fstream> // std::ifstream, std::ofstream
+#include <memory>  // std::make_shared, std::shared_ptr
 #include <string>
 #include <string_view>
 
@@ -19,24 +19,7 @@ namespace ruc {
 File::File(std::string_view path)
 	: m_path(path)
 {
-	// Create input stream object and open file
-	std::ifstream file(path.data(), std::ios::in);
-	VERIFY(file.is_open(), "failed to open file: '{}'", path);
-
-	// Get length of the file
-	file.seekg(0, std::ios::end);
-	int32_t size = file.tellg();
-	file.seekg(0, std::ios::beg);
-	VERIFY(size != -1, "failed to read file length: '{}'", path);
-
-	// Allocate memory filled with zeros
-	auto buffer = std::make_unique<char[]>(size);
-
-	// Fill buffer with file contents
-	file.read(buffer.get(), size);
-	file.close();
-
-	m_data = std::string(buffer.get(), size);
+	m_data = std::string(File::raw(path).get());
 }
 
 File::~File()
@@ -52,6 +35,38 @@ File File::create(std::string_view path)
 	}
 
 	return File(path);
+}
+
+int32_t File::length(std::string_view path, std::ifstream& file)
+{
+	file.seekg(0, std::ios::end);
+	int32_t length = file.tellg();
+	file.seekg(0, std::ios::beg);
+	VERIFY(length != -1, "failed to read file length: '{}'", path);
+
+	return length;
+}
+
+std::shared_ptr<char[]> File::raw(std::string_view path)
+{
+	// Create input stream object and open file
+	std::ifstream file(path.data());
+	VERIFY(file.is_open(), "failed to open file: '{}'", path);
+
+	// Get length of the file
+	int32_t size = File::length(path, file);
+
+	// Allocate memory filled with zeros
+	auto buffer = std::make_shared<char[]>(size + 1);
+
+	// Fill buffer with file contents
+	file.read(buffer.get(), size);
+	file.close();
+
+	// Null termination
+	buffer[size] = '\0';
+
+	return buffer;
 }
 
 // -----------------------------------------

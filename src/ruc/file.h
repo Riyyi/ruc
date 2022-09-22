@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <cstdint> // int32_t
+#include <memory>  // std::shared_ptr
 #include <string>
 #include <string_view>
 
@@ -17,6 +19,8 @@ public:
 	virtual ~File();
 
 	static File create(std::string_view path);
+	static int32_t length(std::string_view path, std::ifstream& file);
+	static std::shared_ptr<char[]> raw(std::string_view path);
 
 	void clear();
 	File& append(std::string_view data);
