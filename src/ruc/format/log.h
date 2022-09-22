@@ -70,7 +70,8 @@ private:
 template<typename T>
 const LogOperatorStyle& operator<<(const LogOperatorStyle& logOperatorStyle, const T& value)
 {
-	_format(const_cast<LogOperatorStyle&>(logOperatorStyle).builder(), value);
+	Formatter<T> formatter;
+	formatter.format(const_cast<LogOperatorStyle&>(logOperatorStyle).builder(), value);
 	return logOperatorStyle;
 }
 
