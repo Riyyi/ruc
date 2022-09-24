@@ -15,6 +15,7 @@
 
 #include "ruc/json/array.h"
 #include "ruc/json/object.h"
+#include "ruc/meta/concepts.h"
 #include "ruc/meta/odr.h"
 
 namespace ruc::json {
@@ -30,44 +31,20 @@ struct jsonConstructor {
 		json.m_value.boolean = boolean;
 	}
 
-	template<typename Json>
-	static void construct(Json& json, int32_t number)
+	template<typename Json, Integral T>
+	static void construct(Json& json, T number)
 	{
 		json.destroy();
 		json.m_type = Json::Type::Number;
 		json.m_value.number = static_cast<double>(number);
 	}
 
-	template<typename Json>
-	static void construct(Json& json, int64_t number)
+	template<typename Json, FloatingPoint T>
+	static void construct(Json& json, T number)
 	{
 		json.destroy();
 		json.m_type = Json::Type::Number;
 		json.m_value.number = static_cast<double>(number);
-	}
-
-	template<typename Json>
-	static void construct(Json& json, uint32_t number)
-	{
-		json.destroy();
-		json.m_type = Json::Type::Number;
-		json.m_value.number = static_cast<double>(number);
-	}
-
-	template<typename Json>
-	static void construct(Json& json, size_t number)
-	{
-		json.destroy();
-		json.m_type = Json::Type::Number;
-		json.m_value.number = static_cast<double>(number);
-	}
-
-	template<typename Json>
-	static void construct(Json& json, double number)
-	{
-		json.destroy();
-		json.m_type = Json::Type::Number;
-		json.m_value.number = number;
 	}
 
 	template<typename Json>
