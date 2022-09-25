@@ -63,6 +63,7 @@ public:
 	};
 
 	bool parse(int argc, const char* argv[]);
+	bool parse(int argc, char* argv[]);
 
 	void addOption(Option&& option);
 	void addOption(bool& value, char shortName, const char* longName, const char* usageString, const char* manString);

@@ -260,6 +260,11 @@ bool ArgParser::parseArgument(std::string_view argument)
 
 bool ArgParser::parse(int argc, const char* argv[])
 {
+	return parse(argc, const_cast<char**>(argv));
+}
+
+bool ArgParser::parse(int argc, char* argv[])
+{
 	bool result = true;
 
 	// Set looping indices
