@@ -46,13 +46,6 @@ public:
 protected:
 	Singleton() {}
 
-	// Hack: in certain situations the instance needs to be set early
-	static void set(T* instance)
-	{
-		VERIFY(!s_instance, "singleton already exists");
-		s_instance = instance;
-	}
-
 	// Constructor token
 	struct s {};
 
