@@ -7,7 +7,7 @@
 #include <cstdint> // int32_t
 #include <filesystem>
 #include <fstream> // std::ifstream, std::ofstream
-#include <memory>  // std::make_shared, std::shared_ptr
+#include <memory>  // std::make_shared, std::make_unique, std::shared_ptr
 #include <string>
 #include <string_view>
 
@@ -19,7 +19,21 @@ namespace ruc {
 File::File(std::string_view path)
 	: m_path(path)
 {
-	m_data = std::string(File::raw(path).get());
+	// Create input stream object and open file
+	std::ifstream file(path.data());
+	VERIFY(file.is_open(), "failed to open file: '{}'", path);
+
+	// Get length of the file
+	int32_t size = File::length(path, file);
+
+	// Allocate memory filled with zeros
+	auto buffer = std::make_unique<char[]>(size);
+
+	// Fill buffer with file contents
+	file.read(buffer.get(), size);
+	file.close();
+
+	m_data = std::string(buffer.get(), size);
 }
 
 File::~File()
@@ -47,6 +61,7 @@ int32_t File::length(std::string_view path, std::ifstream& file)
 	return length;
 }
 
+// FIXME: Deduplicate code with constructor, this broke binary files only
 std::shared_ptr<char[]> File::raw(std::string_view path)
 {
 	// Create input stream object and open file
