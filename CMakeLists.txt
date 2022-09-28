@@ -61,7 +61,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 file(GLOB_RECURSE LIBRARY_SOURCES "src/*.cpp")
 
 add_library(${PROJECT} ${LIBRARY_SOURCES})
-target_include_directories(${PROJECT} PRIVATE
+target_include_directories(${PROJECT} PUBLIC
 	"src")
 
 # ------------------------------------------
@@ -71,7 +71,7 @@ target_include_directories(${PROJECT} PRIVATE
 file(GLOB TEST_LIBRARY_SOURCES "test/*.cpp" "src/ruc/timer.cpp")
 
 add_library(${PROJECT}-test ${TEST_LIBRARY_SOURCES})
-target_include_directories(${PROJECT}-test PRIVATE
+target_include_directories(${PROJECT}-test PUBLIC
 	"src"
 	"test")
 
@@ -83,9 +83,5 @@ if (RUC_BUILD_TESTS)
 	file(GLOB_RECURSE TEST_SOURCES "test/unit/*.cpp")
 
 	add_executable(${PROJECT}-unit-test ${TEST_SOURCES})
-	target_include_directories(${PROJECT}-unit-test PRIVATE
-		"src"
-		"test")
-	target_link_libraries(${PROJECT}-unit-test ruc)
-	target_link_libraries(${PROJECT}-unit-test ruc-test)
+	target_link_libraries(${PROJECT}-unit-test ruc ruc-test)
 endif()
