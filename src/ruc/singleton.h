@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <cstdlib> // malloc
+#include <cstdlib> // free, malloc
 
 #include "meta/assert.h"
 
@@ -20,7 +20,7 @@ public:
 		if (s_instance == nullptr) {
 			// Allocate memory for this instance
 			s_instance = static_cast<T*>(malloc(sizeof(T)));
-			// Call the constructor using placement new
+			// Call the constructor using "placement new"
 			new (s_instance) T { s {} };
 		}
 
@@ -33,7 +33,11 @@ public:
 			return;
 		}
 
-		delete s_instance;
+		// Call the destructor
+		s_instance->~T();
+		// Deallocate memory
+		free(static_cast<void*>(s_instance));
+
 		s_instance = nullptr;
 	}
 
