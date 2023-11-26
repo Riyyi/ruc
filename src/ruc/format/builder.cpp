@@ -5,6 +5,7 @@
  */
 
 #include <algorithm> // min
+#include <charconv>  // std::to_chars
 #include <cstddef>   // size_t
 #include <cstdint>   // uint8_t, uint16_t, uint32_t, uint64_t
 #include <iomanip>   // setprecision
@@ -178,15 +179,46 @@ void Builder::putI64(int64_t value,
 
 void Builder::putF64(double number, uint8_t precision) const
 {
-	precision = std::min(precision, static_cast<uint8_t>(std::numeric_limits<double>::digits10));
+	char buffer[512];
+	auto conversion = std::to_chars(buffer, buffer + sizeof(buffer), number);
+	auto converted = std::string(buffer, conversion.ptr - buffer);
 
-	std::stringstream stream;
-	stream
-		<< std::fixed << std::setprecision(precision)
-		<< number
-		<< std::defaultfloat << std::setprecision(6);
-	std::string string = stream.str();
-	m_builder << string;
+	size_t dot = converted.find('.');
+	size_t length = dot + precision + 1;
+
+	// There is no number behind the decimal point
+	if (dot == std::string::npos) {
+		if (precision > 0) {
+			converted += ".0";
+		}
+		m_builder << converted;
+		return;
+	}
+
+	// Only round if there are more numbers behind the decimal point than the precision,
+	// or the number that comes after the maximum precision is higher than 4
+	if (converted.length() > length && converted[length] > '4') {
+		for (size_t i = length - 1; i >= 0 && i < converted.length(); --i) {
+			if (converted[i] == '.') {
+				continue;
+			}
+			if (converted[i] < '9') { // Overflow stops here
+				converted[i]++;
+				break;
+			}
+			converted[i] = '0';
+		}
+	}
+
+	// Cut off the characters after the requested precision
+	if (converted.length() > length) {
+		size_t last_included_number = converted.find_last_not_of("0", length - 1);
+		// If precision is zero, also cut off the '.', otherwise include the '0' after the '.'
+		size_t last_character_is_dot_offset = (converted[last_included_number] == '.') ? (precision > 0 ? 1 : -1) : 0;
+		converted = converted.substr(0, last_included_number + last_character_is_dot_offset + 1);
+	}
+
+	m_builder << converted;
 }
 
 void Builder::putString(std::string_view string, char fill, Align align, size_t width) const
