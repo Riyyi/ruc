@@ -1,3 +1,4 @@
+#include <algorithm>  // std::sort, std::unique
 #include <cerrno>     // errno, EAGAIN, EINTR
 #include <cstddef>    // size_t
 #include <cstdio>     // perror, ssize_t

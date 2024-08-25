@@ -23,3 +23,7 @@ inline bool is(U* input)
 {
 	return input && is<T>(*input);
 }
+
+// References:
+// - serenity/AK/TypeCasts.h
+// - serenity/Userland/Libraries/LibJS/AST.h
