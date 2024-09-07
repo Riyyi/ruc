@@ -189,8 +189,15 @@ void Builder::putF64(double number, uint8_t precision) const
 	// There is no number behind the decimal point
 	if (dot == std::string::npos) {
 		if (precision > 0) {
-			converted += ".0";
+			converted += '.' + std::string(precision, '0');
 		}
+		m_builder << converted;
+		return;
+	}
+
+	// If there are less numbers behind the decimal point than the precision
+	if (converted.length() < length) {
+		converted += std::string(length - converted.length(), '0');
 		m_builder << converted;
 		return;
 	}
